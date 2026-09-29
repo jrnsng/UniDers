@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ders Takip</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+<div id="errorBar" class="error-bar" role="alert" hidden></div>
+
+<!-- Giriş / Kayıt -->
+<main id="authView" class="wrap narrow" hidden>
+  <h1>Ders Takip</h1>
+  <p class="muted">Verilerinin her cihazda aynı olması için giriş yap.</p>
+  <form id="authForm" class="stack">
+    <label>E-posta <input id="authEmail" type="email" autocomplete="email" required></label>
+    <label>Şifre (en az 6 karakter) <input id="authPassword" type="password" autocomplete="current-password" minlength="6" required></label>
+    <div class="row">
+      <button class="btn primary" type="submit" value="login">Giriş yap</button>
+      <button class="btn" type="submit" value="signup">Kayıt ol</button>
+    </div>
+  </form>
+</main>
+
+<!-- Uygulama -->
+<div id="appView" hidden>
+  <div class="wrap">
+    <!-- Ana sayfa -->
+    <section id="homeView">
+      <header class="top">
+        <div>
+          <h1>Ders Takip</h1>
+          <p class="muted">Derslerini, konularını ve tekrar zamanlarını tek yerden takip et.</p>
+        </div>
+        <div class="row">
+          <button class="btn primary" data-action="add-course">+ Ders Ekle</button>
+          <button class="btn ghost" data-action="logout">Çıkış</button>
+        </div>
+      </header>
+      <section class="panel" aria-labelledby="todayTitle">
+        <h2 id="todayTitle">Bugün</h2>
+        <div id="todayBox"></div>
+      </section>
+      <h2>Derslerim</h2>
+      <div id="courseGrid" class="grid"></div>
+    </section>
+
+    <!-- Ders sayfası -->
+    <section id="courseView" hidden></section>
+  </div>
+</div>
+
+<!-- Ders ekle / düzenle -->
+<dialog id="courseDialog">
+  <form id="courseForm" class="stack">
+    <h2 id="courseDialogTitle">Ders ekle</h2>
+    <label>Ders adı <input id="courseName" maxlength="80" required></label>
+    <label>Renk <input id="courseColor" type="color" value="#7c3aed"></label>
+    <div class="row end">
+      <button class="btn" type="button" data-action="close-dialog">Vazgeç</button>
+      <button class="btn primary" type="submit">Kaydet</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Konu ekle / düzenle -->
+<dialog id="topicDialog">
+  <form id="topicForm" class="stack">
+    <h2 id="topicDialogTitle">Konu ekle</h2>
+    <label>Konu adı <input id="topicName" maxlength="120" required></label>
+    <div class="row end">
+      <button class="btn" type="button" data-action="close-dialog">Vazgeç</button>
+      <button class="btn primary" type="submit">Kaydet</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Çalışma oturumu -->
+<dialog id="sessionDialog">
+  <form id="sessionForm" class="stack">
+    <h2>Çalışma kaydı</h2>
+    <p class="muted" id="sessionCourseName"></p>
+    <label>Konu <select id="sessionTopic" required></select></label>
+    <div id="prevNote" class="prev-note" hidden></div>
+    <div id="hardWarn" class="warn" hidden>Bu konu birkaç çalışmadır zor geliyor. Daha erken tekrar etmen iyi olabilir.</div>
+    <label>Tarih <input id="sessionDate" type="date" required></label>
+    <label>Çalışma süresi (dakika) <input id="sessionDuration" type="number" min="1" max="1440" step="1" inputmode="numeric" placeholder="90" required></label>
+    <label>Verimlilik: <output id="prodOut">5</output>/10 <span class="muted">(1 çok verimsiz, 10 çok verimli)</span>
+      <input id="sessionProd" type="range" min="1" max="10" step="1" value="5"></label>
+    <label>Zorluk: <output id="diffOut">5</output>/10 <span class="muted">(1 çok kolay, 10 çok zor)</span>
+      <input id="sessionDiff" type="range" min="1" max="10" step="1" value="5"></label>
+    <label>Çalışma notu <textarea id="sessionNote" rows="6" placeholder="Ne öğrendin? Nerede zorlandın? Nerede kaldın?"></textarea></label>
+    <div class="row end">
+      <button class="btn" type="button" data-action="close-dialog">Vazgeç</button>
+      <button class="btn primary" type="submit">Kaydet</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="script.js"></script>
+</body>
+</html>
